@@ -17,7 +17,6 @@ module Enumerable
         end
         return self
     end
-    #my_select in the same way, though you may use #my_each in your definition (but not #each).
     def my_select
         pick = []
         self.my_each { |x|
@@ -27,8 +26,14 @@ module Enumerable
         }
         return pick
     end
-
-    #my_all? (continue as above)
+    def my_all?
+        self.my_each { |x|
+        if yield(x) == true
+            return true
+        end
+        }
+        return false
+    end
     #my_any?
     #my_none?
     #my_count
@@ -56,6 +61,8 @@ puts num_array.my_select {|x| x.odd?}
 puts string_array.my_select {|x| x != "a"}
 
 puts "________"
+
+puts num_array.my_all? {|x| x>3}
 
 
 

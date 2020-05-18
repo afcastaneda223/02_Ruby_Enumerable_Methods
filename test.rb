@@ -8,21 +8,20 @@ module Enumerable
         end
         return self
     end
-    def my_select
-        pick = []
+    def my_all?
         self.my_each { |x|
-        if yield(x)
-          pick.push(x)
+        if yield(x) == true
+            return true
         end
         }
-        return pick
+        return false
     end
 end
 
 array = ["a","b","c",1,2,3,true,false]
 num_array = [1,2,3,4,5,6,7]
-string_array = ["a","b","c"]
+string_array = ["ab","bbb","cb"]
 bool_array = [true,false,true]
 
 
-puts num_array.my_select {|x| x.odd?}
+puts string_array.my_all?{|x| x.length > 3}
