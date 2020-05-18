@@ -28,13 +28,21 @@ module Enumerable
     end
     def my_all?
         self.my_each { |x|
+        if yield(x) == false
+            return false
+        end
+        }
+        return true
+    end
+    #my_any?
+    def my_any?
+        self.my_each { |x|
         if yield(x) == true
             return true
         end
         }
         return false
     end
-    #my_any?
     #my_none?
     #my_count
     #my_map
@@ -43,7 +51,7 @@ end
 
 array = ["a","b","c",0,1,2,3,true,false]
 num_array = [1,2,3,4,5,6,7]
-string_array = ["a","b","c"]
+string_array = ["ab","abc","abcd"]
 bool_array = [true,false,true]
 
 array.my_each { |x|
@@ -62,7 +70,11 @@ puts string_array.my_select {|x| x != "a"}
 
 puts "________"
 
-puts num_array.my_all? {|x| x>3}
+puts string_array.my_all? {|x| x.length >3}
+
+puts "________"
+
+puts string_array.my_any? {|x| x.length >3}
 
 
 
