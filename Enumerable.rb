@@ -17,14 +17,43 @@ module Enumerable
         end
         return self
     end
+    #my_select in the same way, though you may use #my_each in your definition (but not #each).
+    def my_select
+        pick = []
+        self.my_each { |x|
+            if yield(x)
+                pick.push(x)
+            end
+        }
+        return pick
+    end
+
+    #my_all? (continue as above)
+    #my_any?
+    #my_none?
+    #my_count
+    #my_map
+    #my_inject
 end
 
-array = ["a","b","c",1,2,3,true,false]
+array = ["a","b","c",0,1,2,3,true,false]
+num_array = [1,2,3,4,5,6,7]
+string_array = ["a","b","c"]
+bool_array = [true,false,true]
 
 array.my_each { |x|
     puts x
 }
+puts "________"
 
 array.my_each_with_index { |x,y|
     puts x if y.odd?
 }
+puts "________"
+
+puts num_array.my_select {|x| x.odd?}
+
+puts string_array.my_select {|x| x != "a"}
+
+puts "________"
+
