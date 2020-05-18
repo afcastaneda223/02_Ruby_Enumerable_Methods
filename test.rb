@@ -8,20 +8,20 @@ module Enumerable
         end
         return self
     end
-    def my_all?
+    def my_none?
         self.my_each { |x|
         if yield(x) == true
-            return true
+            return false
         end
         }
-        return false
+        return true
     end
 end
 
 array = ["a","b","c",1,2,3,true,false]
 num_array = [1,2,3,4,5,6,7]
-string_array = ["ab","bbb","cb"]
+string_array = ["ab","bbbb","cb"]
 bool_array = [true,false,true]
 
 
-puts string_array.my_all?{|x| x.length > 3}
+puts string_array.my_none?{|x| x.length > 3}

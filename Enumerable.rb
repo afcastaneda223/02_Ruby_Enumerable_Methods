@@ -44,6 +44,14 @@ module Enumerable
         return false
     end
     #my_none?
+    def my_none?
+        self.my_each { |x|
+        if yield(x) == true
+            return false
+        end
+        }
+        return true
+    end
     #my_count
     #my_map
     #my_inject
