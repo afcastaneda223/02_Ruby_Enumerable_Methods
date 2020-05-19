@@ -1,19 +1,19 @@
 module Enumerable
     def my_each
         n= self.length
-        i = 0
-        while i < n
-            yield(self[i])
-            i += 1
+        x = 0
+        while x < n
+            yield(self[x])
+            x += 1
         end
         return self
     end
     def my_each_with_index
         n= self.length
-        i = 0
-        while i < n
-            yield(self[i], i)
-            i += 1
+        x = 0
+        while x < n
+            yield(self[x], x)
+            x += 1
         end
         return self
     end
@@ -53,7 +53,35 @@ module Enumerable
         return true
     end
     #my_count
+    def my_count
+        counter = 0
+        n= self.length
+        self.my_each { |x|
+        if yield(x) == true
+            counter += 1
+        else
+            return n
+        end
+        }
+        return counter
+    end
     #my_map
+    def my_select
+        pick = []
+        self.my_each { |x|
+            if yield(x)
+                pick.push(x)
+            end
+        }
+        return pick
+    end
+    def my_map
+        maps = []
+        self.my_each { |x|
+            maps.push(yield(x))
+        }
+        return maps
+    end
     #my_inject
 end
 
@@ -65,24 +93,40 @@ bool_array = [true,false,true]
 array.my_each { |x|
     puts x
 }
-puts "________"
+puts "my_each"
 
 array.my_each_with_index { |x,y|
     puts x if y.odd?
 }
-puts "________"
+puts "my_each_with_index"
 
 puts num_array.my_select {|x| x.odd?}
 
 puts string_array.my_select {|x| x != "a"}
 
-puts "________"
+puts "my_select"
 
 puts string_array.my_all? {|x| x.length >3}
 
-puts "________"
+puts "my_all"
 
 puts string_array.my_any? {|x| x.length >3}
+
+puts "my_any"
+
+puts num_array.count
+
+puts num_array.count{|x|
+    x >=4
+}
+puts "my_count"
+
+print num_array.my_map{|x| 
+    x+5
+}
+puts " "
+puts "my_map"
+
 
 
 
