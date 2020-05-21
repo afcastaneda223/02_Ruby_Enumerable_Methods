@@ -1,21 +1,14 @@
-# [HTML & CSS capstone project: Directory of Restaurants
-
+# [Enumerable Methdos
 > Directory of restaurants
 
-![screenshot](./assets/ScreenShot.png)
-
-## Live link
-
-- https://raw.githack.com/afcastaneda223/Directory-of-Restaurants/Develop/index.html
 
 ## Built With
 
-- HTML,
-- CSS,
+- Ruby
 
 ## GitHub Repo
 
--  https://github.com/afcastaneda223/Directory-of-Restaurants
+-  https://github.com/afcastaneda223/02_Ruby_Enumerable_Methods
 
 
 ## Author
