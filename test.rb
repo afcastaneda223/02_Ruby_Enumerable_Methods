@@ -23,21 +23,30 @@ module Enumerable
         return maps
     end
     def my_inject
-        store = self[0]
-        self.my_map{|x| 
-        store = yield(store[x], x) 
-    }
+        n= self.length
+        x = 0
+        total = self[0]
+        while x < n-1
+           total = yield(total,x)
+            x += 1
+        end
+        return total
+    end
+    def sum(arr)
+        arr.my_each { |x| 
+            x+1
+        }
     end
 end
 array = ["a","b","c",1,2,3,true,false]
-num_array = [1,2,3]
+num_array = [1,2,3,4,5]
 string_array = ["ab","bbbb","cb"]
 bool_array = [true,false,true]
-my_proc = Proc.new { |x,y| x}
+my_proc = Proc.new { |x| x+1}
 
 
 
 #print num_array.map{|x| x+1}
 
-
-print num_array.my_inject(&my_proc)
+puts num_array.inject{|x,y| x*y}
+puts num_array.my_inject{|x,y| x*y}

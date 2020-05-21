@@ -1,59 +1,66 @@
 module Enumerable
     def my_each
+        return to_enum unless block_given?
         n= self.length
         x = 0
         while x < n
             yield(self[x])
             x += 1
         end
-        return self
+         self
     end
     def my_each_with_index
+        return to_enum unless block_given?
         n= self.length
         x = 0
         while x < n
             yield(self[x], x)
             x += 1
         end
-        return self
+         self
     end
     def my_select
+        return to_enum unless block_given?
         pick = []
         self.my_each { |x|
             if yield(x)
                 pick.push(x)
             end
         }
-        return pick
+         pick
     end
     def my_all?
+        return to_enum unless block_given?
         self.my_each { |x|
         if yield(x) == false
             return false
         end
         }
-        return true
+         true
     end
     #my_any?
     def my_any?
+        return to_enum unless block_given?
         self.my_each { |x|
         if yield(x) == true
             return true
         end
         }
-        return false
+         false
     end
     #my_none?
     def my_none?
+        return to_enum unless block_given?
         self.my_each { |x|
         if yield(x) == true
             return false
         end
         }
-        return true
+         true
     end
     #my_count
     def my_count
+        return to_enum unless block_given?
         counter = 0
         n= self.length
         self.my_each { |x|
@@ -63,18 +70,9 @@ module Enumerable
             return n
         end
         }
-        return counter
+         counter
     end
     #my_map
-    def my_select
-        pick = []
-        self.my_each { |x|
-            if yield(x)
-                pick.push(x)
-            end
-        }
-        return pick
-    end
     def my_map(param = nil)
         maps = []
         self.my_each { |x|
@@ -86,7 +84,7 @@ module Enumerable
                 return to_enum
             end
         }
-        return maps
+         maps
     end
     #my_inject
     def my_inject
@@ -110,9 +108,9 @@ my_proc = Proc.new { |x| x+2}
 
 puts " my_each"
 
-array.my_each { |x|
-    print x
-}
+puts array.each{|x| x}
+puts array.my_each{|x| x}
+
 puts " "
 puts " my_each_with_index"
 
@@ -159,3 +157,4 @@ puts "my_inject"
 
 
 print multiply_els(num_array)
+
