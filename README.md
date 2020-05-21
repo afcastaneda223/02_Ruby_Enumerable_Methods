@@ -1,4 +1,4 @@
-# [Enumerable Methdos
+# Enumerable Methdos
 > Directory of restaurants
 
 
