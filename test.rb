@@ -24,10 +24,12 @@ module Enumerable
     end
     def my_inject
         n= self.length
-        x = 0
+        x = 1
         total = self[0]
-        while x < n-1
-           total = yield(total,x)
+        while x < n
+            puts "_____"
+            puts total,x
+           total = yield(total,self[x])
             x += 1
         end
         return total
@@ -44,9 +46,19 @@ string_array = ["ab","bbbb","cb"]
 bool_array = [true,false,true]
 my_proc = Proc.new { |x| x+1}
 
+puts num_array.inject{|x,y| x*y}
 
+puts num_array.my_inject{|x,y| x*y}
 
 #print num_array.map{|x| x+1}
-
+=begin
 puts num_array.inject{|x,y| x*y}
 puts num_array.my_inject{|x,y| x*y}
+
+
+puts num_array.inject(:+)
+puts num_array.inject(5, :+)
+
+puts num_array.my_inject(:+)
+puts num_array.my_inject(5, :+)
+=end

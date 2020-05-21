@@ -73,6 +73,7 @@ module Enumerable
          counter
     end
     #my_map
+    return to_enum unless block_given?
     def my_map(param = nil)
         maps = []
         self.my_each { |x|
@@ -88,41 +89,47 @@ module Enumerable
     end
     #my_inject
     def my_inject
-        store = self[0]
-        self.my_map{|x| 
-        store = yield(store, x) 
-    }
+        return to_enum unless block_given?
+        n= self.length
+        x = 1
+        total = self[0]
+        while x < n
+           total = yield(total,self[x])
+            x += 1
+        end
+        return total
     end
-    def multiply_els(arr)
-        arr.my_inject{|x,y| 
-        x*y
-    }
+
+    def multiply_els
+        return to_enum unless block_given?
+        self.inject{|x,y| x*y}
     end
 end
 
 array = ["a","b","c",0,1,2,3,true,false]
-num_array = [1,2,3,4,5,6,7]
+num_array = [2,4,5]
 string_array = ["ab","abc","abcd"]
 bool_array = [true,false,true]
 my_proc = Proc.new { |x| x+2}
 
+
 puts " my_each"
 
-puts array.each{|x| x}
 puts array.my_each{|x| x}
 
 puts " "
 puts " my_each_with_index"
 
-print array.my_each_with_index { |x,y|
-     x if y.odd?
+array.my_each_with_index { |x,y|
+    puts "#{x}: #{y}"
 }
+
 puts " "
 puts " my_select"
 
 print num_array.my_select {|x| x.odd?}
 
-print string_array.my_select {|x| x != "a"}
+print string_array.my_select {|x| x != "ab"}
 
 puts " "
 puts " my_all"
@@ -155,6 +162,4 @@ print num_array.my_map(&my_proc)
 puts " "
 puts "my_inject"
 
-
-print multiply_els(num_array)
-
+puts num_array.multiply_els
