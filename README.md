@@ -1,5 +1,4 @@
 # Enumerable Methdos
-> Directory of restaurants
 
 
 ## Built With
