@@ -11,11 +11,11 @@ module Enumerable
     end
     def my_each_with_index
         return to_enum unless block_given?
-        n= self.length
-        x = 0
-        while x < n
+        x=0
+        self.my_each{
             yield(self[x], x)
             x += 1
+        }
         end
          self
     end
@@ -30,10 +30,10 @@ module Enumerable
          pick
     end
     def my_all?
-        return to_enum unless block_given?
         self.my_each { |x|
         if yield(x) == false
             return false
+        elsif 
         end
         }
          true
@@ -73,7 +73,6 @@ module Enumerable
          counter
     end
     #my_map
-    return to_enum unless block_given?
     def my_map(param = nil)
         maps = []
         self.my_each { |x|
