@@ -29,14 +29,36 @@ module Enumerable
         }
          pick
     end
-    def my_all?
-        self.my_each { |x|
-        if yield(x) == false
-            return false
-        elsif 
-        end
+    def my_all?(arg=nil)
+        if block_given? && arg == nil
+          self.my_each { |x|
+            if yield(x) == false
+                return false
+            end
         }
-         true
+        return true
+
+        elsif block_given? == false && arg == nil
+            self.my_each {|x| 
+                if x == nil || x == false
+                    return false
+                end
+                }
+        return true
+            
+        elsif arg.is_a?(Regexp)
+                self.my_each{ |x|
+                return false unless x.match(arg)
+                }
+        return true
+            
+         else arg.is_a?(Module)
+                 self.my_each{ |x|
+                 return false unless x.is_a?(arg)
+                }
+        return true
+            
+        end
     end
     #my_any?
     def my_any?
