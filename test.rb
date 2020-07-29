@@ -22,15 +22,37 @@ module Enumerable
         }
          maps
     end
-    def my_all?(param = nil)
-        if param
-            self.my_each { |x|
-            if yield(x) == false
-                return false
-            elsif 
-            end
-            }
-             true
+    def my_all?(arg=nil)
+        if block_given? && arg == nil
+          self.my_each { |x|
+          return false unless yield(x) == false
+        }
+        return true
+
+        elsif block_given? == false && arg == nil
+            self.my_each {|x| 
+            return false unless x == nil || x == false
+                }
+        return true
+            
+        elsif arg.is_a?(Regexp)
+                self.my_each{ |x|
+                return false unless x.match(arg)
+                }
+        return true
+    elsif arg !=nil
+        self.my_each{ |x|
+        return false unless x == arg
+        }
+return true
+            
+    else arg.is_a?(Module)
+        self.my_each{ |x|
+        return false unless x.is_a?(arg)
+        }
+        return true
+            
+        end
     end
 end
 

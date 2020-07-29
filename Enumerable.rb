@@ -1,4 +1,5 @@
 module Enumerable
+    #my_each
     def my_each
         return to_enum unless block_given?
         n= self.length
@@ -9,6 +10,7 @@ module Enumerable
         end
          self
     end
+    #my_each_with_index
     def my_each_with_index
         return to_enum unless block_given?
         x=0
@@ -19,6 +21,7 @@ module Enumerable
         end
          self
     end
+    #my_select
     def my_select
         return to_enum unless block_given?
         pick = []
@@ -29,56 +32,119 @@ module Enumerable
         }
          pick
     end
-    def my_all?(arg=nil)
+    #my_all?
+    def my_all?(arg =nil)
         if block_given? && arg == nil
           self.my_each { |x|
             if yield(x) == false
                 return false
             end
-        }
-        return true
+            }
+            return true
 
-        elsif block_given? == false && arg == nil
-            self.my_each {|x| 
-                if x == nil || x == false
-                    return false
-                end
+            elsif block_given? == false && arg == nil
+                self.my_each {|x| 
+                return false unless x == nil || x == false                        
                 }
-        return true
+            return true
             
-        elsif arg.is_a?(Regexp)
+            elsif arg.is_a?(Regexp)
                 self.my_each{ |x|
                 return false unless x.match(arg)
                 }
-        return true
+            return true
             
-         else arg.is_a?(Module)
-                 self.my_each{ |x|
-                 return false unless x.is_a?(arg)
+            elsif arg.is_a?(Module)
+                self.my_each{ |x|
+                return false unless x.is_a?(arg)
+               }
+           return true
+            else arg != nil
+                self.my_each{ |x|
+                return false unless x == arg
                 }
-        return true
-            
+            return true
         end
     end
     #my_any?
-    def my_any?
-        return to_enum unless block_given?
-        self.my_each { |x|
-        if yield(x) == true
-            return true
-        end
-        }
-         false
-    end
-    #my_none?
-    def my_none?
-        return to_enum unless block_given?
-        self.my_each { |x|
-        if yield(x) == true
+    def my_any?(arg=nil)
+        if block_given? && arg == nil
+            self.my_each { |x|
+            if yield(x) == true
+                return true
+            end
+            }
+            return false
+            elsif block_given? == false && arg == nil
+                self.my_each {|x| 
+                if x == nil || x == false
+                    return true 
+                end
+                }
+                return false
+            elsif arg.is_a?(Regexp)
+                self.my_each{ |x|
+                if x.match(arg)
+                    return true 
+                end
+                }
+                return false
+            elsif arg.is_a?(Module)
+                self.my_each{ |x|
+                if x.is_a?(arg)
+                    return true 
+                end
+                }
+                return false
+
+            else arg !=nil
+                self.my_each{ |x|
+                if x == arg
+                    return true 
+                end
+                }
             return false
         end
-        }
-         true
+    end
+    #my_none?
+    def my_none?(arg=nil)
+        if block_given? && arg == nil
+            self.my_each { |x|
+            if yield(x) == true
+                return false
+            end
+            }
+            return true
+            elsif block_given? == false && arg == nil
+                self.my_each {|x| 
+                if x == nil || x == false
+                    return false 
+                end
+                }
+                return true
+            elsif arg.is_a?(Regexp)
+                self.my_each{ |x|
+                if x.match(arg)
+                    return false 
+                end
+                }
+                return true
+            elsif arg.is_a?(Module)
+                self.my_each{ |x|
+                if x.is_a?(arg)
+                    return false 
+                end
+                }
+                return true
+
+            else arg !=nil
+                self.my_each{ |x|
+                if x == arg
+                    return false 
+                end
+                }
+                return true
+        end
     end
     #my_count
     def my_count
