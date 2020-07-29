@@ -123,6 +123,26 @@ module Enumerable
                 return true
         end
     end
+    #my_count
+    def my_count(arg = nil)
+        counter = 0
+        if block_given?
+            self.my_each { |x| 
+                if yield(x) == true
+                    counter += 1
+                end
+            }
+            elsif arg != nil
+                self.my_each { |x| 
+                if arg == x
+                    counter += 1
+                end
+                }
+            else
+                return self.length
+        end
+         counter
+    end
 end
 
 
@@ -209,3 +229,11 @@ puts na.my_none?{ |x|  x >1}
 puts na.none?{ |x|  x >1}
 puts na.my_none?{ |x|   x<1}
 puts na.none?{ |x|  x <1}
+
+
+puts na.my_count
+puts na.count
+puts na.my_count(2)
+puts na.count(2)
+puts na.my_count{ |x|  x >4}
+puts na.count{ |x|  x >4}

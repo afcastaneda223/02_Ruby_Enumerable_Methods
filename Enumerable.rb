@@ -147,25 +147,29 @@ module Enumerable
         end
     end
     #my_count
-    def my_count
-        return to_enum unless block_given?
+    def my_count(arg = nil)
         counter = 0
-        n= self.length
-        self.my_each { |x|
-        if yield(x) == true
-            counter += 1
-        else
-            return n
+        if block_given?
+            self.my_each { |x| yield(x) == true
+                counter += 1
+            }
+            elsif arg != nil
+                self.my_each { |x| 
+                if arg == x
+                    counter += 1
+                end
+                }
+            else
+                return n
         end
-        }
          counter
     end
     #my_map
-    def my_map(param = nil)
+    def my_map(arg = nil)
         maps = []
         self.my_each { |x|
             if param
-                maps.push(param.call(x))
+                maps.push(arg.call(x))
                 elsif block_given?
                 maps.push(yield(x))
                 else
