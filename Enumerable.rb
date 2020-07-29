@@ -150,8 +150,10 @@ module Enumerable
     def my_count(arg = nil)
         counter = 0
         if block_given?
-            self.my_each { |x| yield(x) == true
-                counter += 1
+            self.my_each { |x| 
+                if yield(x) == true
+                    counter += 1
+                end
             }
             elsif arg != nil
                 self.my_each { |x| 
@@ -160,7 +162,7 @@ module Enumerable
                 end
                 }
             else
-                return n
+                return self.length
         end
          counter
     end
@@ -168,7 +170,7 @@ module Enumerable
     def my_map(arg = nil)
         maps = []
         self.my_each { |x|
-            if param
+            if arg != nil
                 maps.push(arg.call(x))
                 elsif block_given?
                 maps.push(yield(x))
@@ -180,7 +182,6 @@ module Enumerable
     end
     #my_inject
     def my_inject
-        return to_enum unless block_given?
         n= self.length
         x = 1
         total = self[0]
@@ -192,8 +193,7 @@ module Enumerable
     end
 
     def multiply_els
-        return to_enum unless block_given?
-        self.inject{|x,y| x*y}
+        self.my_inject{|x,y| x*y}
     end
 end
 
