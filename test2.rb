@@ -1,4 +1,5 @@
 module Enumerable
+  # my_each
   def my_each
     return to_enum unless block_given?
 
@@ -10,71 +11,6 @@ module Enumerable
     end
     self
   end
-
-  # my_all?
-  def my_all?(arg = nil)
-    if block_given? && arg.nil?
-      my_each do |x|
-        return false if yield(x) == false
-      end
-      true
-
-    elsif block_given? == false && arg.nil?
-      my_each do |x|
-        return false unless x.nil? || x == false
-      end
-      true
-
-    elsif arg.is_a?(Regexp)
-      my_each do |x|
-        return false unless x.match(arg)
-      end
-      true
-
-    elsif arg.is_a?(Module)
-      my_each do |x|
-        return false unless x.is_a?(arg)
-      end
-      true
-    else !arg.nil?
-         my_each do |x|
-           return false unless x == arg
-         end
-         true
-    end
-  end
-
-  # my_any?
-  def my_any?(arg = nil)
-    if block_given? && arg.nil?
-      my_each do |x|
-        return true if yield(x) == true
-      end
-      false
-    elsif block_given? == false && arg.nil?
-      my_each do |x|
-        return true if x.nil? || x == false
-      end
-      false
-    elsif arg.is_a?(Regexp)
-      my_each do |x|
-        return true if x.match(arg)
-      end
-      false
-    elsif arg.is_a?(Module)
-      my_each do |x|
-        return true if x.is_a?(arg)
-      end
-      false
-
-    else !arg.nil?
-         my_each do |x|
-           return true if x == arg
-         end
-         false
-    end
-  end
-
   # my_none?
   def my_none?(arg = nil)
     if block_given? && arg.nil?
@@ -82,9 +18,9 @@ module Enumerable
         return false if yield(x) == true
       end
       true
-    elsif block_given? == false && arg.nil?
+    elsif arg.nil?
       my_each do |x|
-        return false if x.nil? || x == false
+        return false if x
       end
       true
     elsif arg.is_a?(Regexp)
@@ -105,36 +41,29 @@ module Enumerable
          true
     end
   end
-
-  # my_count
-  def my_count(arg = nil)
-    counter = 0
-    if block_given?
-      my_each do |x|
-        counter += 1 if yield(x) == true
-      end
-    elsif !arg.nil?
-      my_each do |x|
-        counter += 1 if arg == x
-      end
-    else
-      return length
-    end
-    counter
-  end
 end
 
-a = ['abc', false, nil, 1]
+a = ['abc', 1,nil,false]
 na = [2, 4, 5]
-sa = %w[ab ab ab]
+sa = ["ab", "ab", "ab"]
 ba = [false, true]
-ea = []
+ea = [nil,nil,false]
 my_proc = proc { |x| x > 3 }
+
+
+puts ea.my_none?
+puts ea.none?
+
+=begin
 puts 'my all'
+
+puts ea.my_any?
+puts ea.any?
+
+ea.my_each{|x| puts x.nil?}
+
 puts a.my_all?
 puts a.all?
-puts ea.my_all?
-puts ea.all?
 puts 'module'
 puts a.my_all?(Numeric)
 puts a.all?(Numeric)
@@ -207,10 +136,13 @@ puts na.my_none? { |x| x > 1 }
 puts na.none? { |x| x > 1 }
 puts na.my_none? { |x| x < 1 }
 puts na.none? { |x| x < 1 }
-
+puts 'my count'
 puts na.my_count
 puts na.count
+puts 'variable'
 puts na.my_count(2)
 puts na.count(2)
+puts 'block'
 puts na.my_count { |x| x > 4 }
 puts na.count { |x| x > 4 }
+=end

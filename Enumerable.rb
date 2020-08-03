@@ -22,7 +22,7 @@ module Enumerable
       x += 1
     end
     self
-    end
+  end
 
   # my_select
   def my_select
@@ -35,7 +35,6 @@ module Enumerable
     pick
   end
 
-  # my_all?
   def my_all?(arg = nil)
     if block_given? && arg.nil?
       my_each do |x|
@@ -45,10 +44,9 @@ module Enumerable
 
     elsif block_given? == false && arg.nil?
       my_each do |x|
-        return false unless x.nil? || x == false
+        return false if x.nil? || x == false
       end
       true
-
     elsif arg.is_a?(Regexp)
       my_each do |x|
         return false unless x.match(arg)
@@ -65,19 +63,18 @@ module Enumerable
            return false unless x == arg
          end
          true
-      end
+    end
   end
-
-  # my_any?
+ # my_any?
   def my_any?(arg = nil)
     if block_given? && arg.nil?
       my_each do |x|
         return true if yield(x) == true
       end
       false
-    elsif block_given? == false && arg.nil?
+    elsif arg.nil?
       my_each do |x|
-        return true if x.nil? || x == false
+        return true if x
       end
       false
     elsif arg.is_a?(Regexp)
@@ -96,7 +93,7 @@ module Enumerable
            return true if x == arg
          end
          false
-      end
+    end
   end
 
   # my_none?
@@ -106,9 +103,9 @@ module Enumerable
         return false if yield(x) == true
       end
       true
-    elsif block_given? == false && arg.nil?
+    elsif arg.nil?
       my_each do |x|
-        return false if x.nil? || x == false
+        return false if x
       end
       true
     elsif arg.is_a?(Regexp)
@@ -127,7 +124,7 @@ module Enumerable
            return false if x == arg
          end
          true
-      end
+    end
   end
 
   # my_count
@@ -157,7 +154,7 @@ module Enumerable
         maps.push(yield(x))
       else
         return to_enum
-        end
+      end
     end
     maps
   end
@@ -169,57 +166,62 @@ module Enumerable
     my_inject { |x, y| x * y }
   end
 end
-array = ['a', 'b', 'c', 0, 1, 2, 3, true, false]
-num_array = [2, 4, 5]
-string_array = %w[ab abc abcd]
-bool_array = [true, false, true]
-my_proc = proc { |x| x + 2 }
 
-puts ' my_each'
+true_array = [1, true, 'hi', []]
+puts true_array.all?
+puts true_array.my_all?
 
-puts array.my_each { |x| x }
 
-puts ' '
-puts ' my_each_with_index'
+# array = ['a', 'b', 'c', 0, 1, 2, 3, true, false]
+# num_array = [2, 4, 5]
+# string_array = %w[ab abc abcd]
+# my_proc = proc { |x| x + 2 }
 
-array.my_each_with_index do |x, y|
-  puts "#{x}: #{y}"
-end
+# puts ' my_each'
 
-puts ' '
-puts ' my_select'
+# puts array.my_each { |x| x }
 
-print num_array.my_select { |x| x.odd? }
+# puts ' '
+# puts ' my_each_with_index'
 
-print string_array.my_select { |x| x != 'ab' }
+# array.my_each_with_index do |x, y|
+#   puts "#{x}: #{y}"
+# end
 
-puts ' '
-puts ' my_all'
+# puts ' '
+# puts ' my_select'
 
-print string_array.my_all? { |x| x.length > 3 }
+# print num_array.my_select { |x| x.odd? }
 
-puts ' '
-puts ' my_any'
+# print string_array.my_select { |x| x != 'ab' }
 
-print string_array.my_any? { |x| x.length > 3 }
+# puts ' '
+# puts ' my_all'
 
-puts ' '
-puts 'my_count'
+# print string_array.my_all? { |x| x.length > 3 }
 
-puts num_array.count
-puts num_array.count { |x|
-  x >= 4
-}
+# puts ' '
+# puts ' my_any'
 
-puts 'my_map'
+# print string_array.my_any? { |x| x.length > 3 }
 
-print num_array.my_map { |x|
-  x + 1
-}
+# puts ' '
+# puts 'my_count'
 
-print num_array.my_map(&my_proc)
+# puts num_array.count
+# puts num_array.count { |x|
+#   x >= 4
+# }
 
-puts ' '
-puts 'my_inject'
+# puts 'my_map'
 
-puts num_array.multiply_els
+# print num_array.my_map { |x|
+#   x + 1
+# }
+
+# print num_array.my_map(&my_proc)
+
+# puts ' '
+# puts 'my_inject'
+
+# puts num_array.multiply_els
