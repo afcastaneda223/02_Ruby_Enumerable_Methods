@@ -65,7 +65,8 @@ module Enumerable
          true
     end
   end
- # my_any?
+
+  # my_any?
   def my_any?(arg = nil)
     if block_given? && arg.nil?
       my_each do |x|
@@ -160,20 +161,45 @@ module Enumerable
   end
 
   # my_inject
-  def my_inject; end
+  def my_inject(memo = nil, value = nil)
+    if block_given?
+      if memo.nil?
+        acumulator = to_a[0]
+        start = 1
+        while start < size
+          acumulator = yield(acumulator, to_a[start])
+          start += 1
+        end
+        acumulator
+      else !memo.nil?
+           acumulator = memo
+           start = 0
+            while start < size
+             acumulator = yield(acumulator, to_a[start])
+             start += 1
+            end
+           acumulator
+      end
+    elsif block_given? == false
+      if !memo.nil? && value.nil?
+        acumulator = nil
+        my_each { |x| acumulator = acumulator.nil? ? x : acumulator.send(memo, x) }
+        acumulator
+      else !value.nil?
+           acumulator = memo
+           my_each { |x| acumulator = acumulator.send(value, x) }
+           acumulator
+      end
+    end
+  end
 
   def multiply_els
     my_inject { |x, y| x * y }
   end
 end
 
-true_array = [1, true, 'hi', []]
-puts true_array.all?
-puts true_array.my_all?
-
-
 # array = ['a', 'b', 'c', 0, 1, 2, 3, true, false]
-# num_array = [2, 4, 5]
+num_array = [2, 4, 5]
 # string_array = %w[ab abc abcd]
 # my_proc = proc { |x| x + 2 }
 
@@ -224,4 +250,5 @@ puts true_array.my_all?
 # puts ' '
 # puts 'my_inject'
 
-# puts num_array.multiply_els
+puts num_array.multiply_els
+puts num_array.my_inject(:*)
