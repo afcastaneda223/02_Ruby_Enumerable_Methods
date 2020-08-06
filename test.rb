@@ -10,61 +10,45 @@ module Enumerable
     end
     self
   end
-
-  def my_map(param = nil)
-    maps = []
-    map do |x|
-      if param
-        maps.push(param.call(x))
-      elsif block_given?
-        maps.push(yield(x))
-      else
-        return to_enum
+  # my_inject
+  def my_inject(memo = nil, value = nil)
+    if block_given?
+      if memo.nil?
+        acumulator = to_a[0]
+        start = 1
+        while start < size
+          acumulator = yield(acumulator, to_a[start])
+          start += 1
+        end
+        acumulator
+      else !memo.nil?
+           acumulator = memo
+           start = 0
+            while start < size
+             acumulator = yield(acumulator, to_a[start])
+             start += 1
+            end
+           acumulator
+      end
+    elsif block_given? == false
+      if !memo.nil? && value.nil?
+        acumulator = nil
+        my_each { |x| acumulator = acumulator.nil? ? x : acumulator.send(memo, x) }
+        acumulator
+      elsif memo.nil? && value.nil?
+        yield(self)
+      else !value.nil?
+           acumulator = memo
+           my_each { |x| acumulator = acumulator.send(value, x) }
+           acumulator
       end
     end
-    maps
   end
 
-  def my_all?(arg = nil)
-    if block_given? && arg.nil?
-      my_each do |x|
-        return false unless yield(x) == false
-      end
-      true
-
-    elsif block_given? == false && arg.nil?
-      my_each do |x|
-        return false unless x.nil? || x == false
-      end
-      true
-
-    elsif arg.is_a?(Regexp)
-      my_each do |x|
-        return false unless x.match(arg)
-      end
-      true
-    elsif !arg.nil?
-      my_each do |x|
-        return false unless x == arg
-      end
-      true
-
-    else arg.is_a?(Module)
-         my_each do |x|
-           return false unless x.is_a?(arg)
-         end
-         true
-
-    end
+  def multiply_els(arr)
+      arr.my_inject { |x, y| x * y }
   end
+
 end
-
-array = ['a', 'b', 'c', 0, 1, 2, 3, true, false]
-num_array = [2, 4, 5]
-string_array = %w[ab abc abcd]
-bool_array = [true, false, true]
-my_proc = proc { |x| puts x }
-
-puts bool_array.my_all?(my_proc)
-puts 'xxxxxxx'
-puts bool_array.all?(my_proc)
+n = []
+puts n.multiply_els([2,4,5])

@@ -34,7 +34,7 @@ module Enumerable
     end
     pick
   end
-
+  # my_all
   def my_all?(arg = nil)
     if block_given? && arg.nil?
       my_each do |x|
@@ -185,6 +185,8 @@ module Enumerable
         acumulator = nil
         my_each { |x| acumulator = acumulator.nil? ? x : acumulator.send(memo, x) }
         acumulator
+      elsif memo.nil? && value.nil?
+        yield(self)
       else !value.nil?
            acumulator = memo
            my_each { |x| acumulator = acumulator.send(value, x) }
@@ -192,63 +194,99 @@ module Enumerable
       end
     end
   end
-
-  def multiply_els
-    my_inject { |x, y| x * y }
-  end
 end
 
-# array = ['a', 'b', 'c', 0, 1, 2, 3, true, false]
-num_array = [2, 4, 5]
-# string_array = %w[ab abc abcd]
-# my_proc = proc { |x| x + 2 }
+def multiply_els(arr)
+    arr.my_inject { |x, y| x * y }
+  end
 
-# puts ' my_each'
+array = ['a', 'b', 'c', 0, 1, 2, 3, true, false]
+string_array = %w[ab abc abcd]
+num_array = [1,2,3,4,5,6,7,8]
+ary = [1, 2, 4, 2]
+my_proc = proc { |x| x + 2 }
 
-# puts array.my_each { |x| x }
+puts ' my_each'
+num_array.my_each { |n| puts "Current number is: #{n}" }
 
-# puts ' '
-# puts ' my_each_with_index'
+puts ' '
+puts ' my_each_with_index'
 
-# array.my_each_with_index do |x, y|
-#   puts "#{x}: #{y}"
-# end
+array.my_each_with_index do |x, y|
+   puts "#{x}: #{y}"
+ end
 
-# puts ' '
-# puts ' my_select'
+puts ' '
+puts ' my_select'
+puts ' '
 
-# print num_array.my_select { |x| x.odd? }
+print num_array.my_select { |x| x.odd? }
+puts ' '
+puts string_array.my_select { |x| x != 'ab' }
+puts ' '
+puts ' my_all'
+puts ' '
+puts %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
+puts %w[ant bear cat].my_all? { |word| word.length >= 4 } #=> false
+puts %w[ant bear cat].my_all?(/t/)                        #=> false
+puts [1, 2i, 3.14].my_all?(Numeric)                       #=> true
+puts [nil, true, 99].my_all?                              #=> false
+puts [].my_all?                                           #=> true
 
-# print string_array.my_select { |x| x != 'ab' }
+puts ' '
+puts ' my_any'
+puts ' '
+puts %w[ant bear cat].my_any? { |word| word.length >= 3 } #=> true
+puts %w[ant bear cat].my_any? { |word| word.length >= 4 } #=> true
+puts %w[ant bear cat].my_any?(/d/)                        #=> false
+puts [nil, true, 99].my_any?(Integer)                     #=> true
+puts [nil, true, 99].my_any?                              #=> true
+puts [].my_any?                                           #=> false
 
-# puts ' '
-# puts ' my_all'
+puts ' '
+puts ' my_none'
+puts ' '
+puts %w{ant bear cat}.my_none? { |word| word.length == 5 } #=> true
+puts %w{ant bear cat}.my_none? { |word| word.length >= 4 } #=> false
+puts %w{ant bear cat}.my_none?(/d/)                        #=> true
+puts [1, 3.14, 42].my_none?(Float)                         #=> false
+puts [].my_none?                                           #=> true
+puts [nil].my_none?                                        #=> true
+puts [nil, false].my_none?                                 #=> true
+puts [nil, false, true].my_none?                           #=> false
 
-# print string_array.my_all? { |x| x.length > 3 }
+puts ' '
+puts 'my_count'
+puts ' '
+puts ary.my_count               #=> 4
+puts ary.my_count(2)            #=> 2
+puts ary.my_count{ |x| x%2==0 } #=> 3
 
-# puts ' '
-# puts ' my_any'
+puts ' '
+puts 'my_map'
+puts ' '
+print num_array.my_map { |x| x + 1}
+puts ' '
+print num_array.my_map(&my_proc)
 
-# print string_array.my_any? { |x| x.length > 3 }
+puts ' '
+puts 'my_inject'
+puts ' '
+# Sum some numbers
+puts [5,6,7,8,9,10].my_inject(:+)                             #=> 45
+# Same using a block and inject
+puts [5,6,7,8,9,10].my_inject { |sum, n| sum + n }            #=> 45
+# Multiply some numbers
+puts [5,6,7,8,9,10].my_inject(1, :*)                          #=> 151200
+# Same using a block
+puts [5,6,7,8,9,10].my_inject(1) { |product, n| product * n } #=> 151200
+# find the longest word
+longest = %w{ cat sheep bear }.my_inject do |memo, word|
+   memo.length > word.length ? memo : word
+end
+puts longest                                        #=> "sheep"
 
-# puts ' '
-# puts 'my_count'
-
-# puts num_array.count
-# puts num_array.count { |x|
-#   x >= 4
-# }
-
-# puts 'my_map'
-
-# print num_array.my_map { |x|
-#   x + 1
-# }
-
-# print num_array.my_map(&my_proc)
-
-# puts ' '
-# puts 'my_inject'
-
-puts num_array.multiply_els
-puts num_array.my_inject(:*)
+puts ' '
+puts 'multiply_els'
+puts ' '
+puts multiply_els([2,4,5])
