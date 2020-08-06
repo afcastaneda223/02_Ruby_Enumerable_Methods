@@ -198,7 +198,7 @@ end
 
 def multiply_els(arr)
     arr.my_inject { |x, y| x * y }
-  end
+end
 
 array = ['a', 'b', 'c', 0, 1, 2, 3, true, false]
 string_array = %w[ab abc abcd]
