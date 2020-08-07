@@ -1,4 +1,15 @@
 # Enumerable Methdos
+The Program includes Enumerable methods that work the same as the original, they can be called and used likewise with the only diference to call them with "my_" before the same name. The methods included are: 
+
+#my_each, 
+#my_each_with_index
+#my_select
+#my_all? 
+#my_any?
+#my_none?
+#my_count
+#my_map
+#my_inject
 
 
 ## Built With
@@ -25,10 +36,7 @@ Give a ⭐️ if you like this project!
 
 ## Acknowledgments
 
-- Microverse
-- [https://coverr.co/] for the awsome cover.
-- Special thanks to Mathew Njuguna [https://www.behance.net/mathewnjuguna] & Sam Achola [https://www.behance.net/aweSam]
-- Design idea by [Mathew Njuguna and others on Behance](https://www.behance.net/mathewnjuguna) info (layouts) follow in this link [https://www.behance.net/gallery/25563385/PatashuleKE]
+- My family
 
 
 ## 📝 License
