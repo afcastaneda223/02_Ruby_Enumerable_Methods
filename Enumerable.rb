@@ -1,12 +1,17 @@
+# frozen_string_literal: true
+
 module Enumerable
   # my_each
   def my_each
     return to_enum unless block_given?
-
-    n = length
     x = 0
-    while x < n
-      yield(self[x])
+    if is_a?(Array)
+      arr = self
+    else
+      arr = to_a
+    end
+    while x < arr.length
+      yield(arr[x])
       x += 1
     end
     self
@@ -15,25 +20,29 @@ module Enumerable
   # my_each_with_index
   def my_each_with_index
     return to_enum unless block_given?
-
     x = 0
-    my_each do
-      yield(self[x], x)
-      x += 1
+    if is_a?(Array)
+      arr = self
+    else
+      arr = to_a
     end
+    while x < arr.length
+      yield(arr[x], x)
+      x += 1
+   end
     self
   end
 
   # my_select
   def my_select
     return to_enum unless block_given?
-
     pick = []
     my_each do |x|
       pick.push(x) if yield(x)
     end
     pick
   end
+
   # my_all
   def my_all?(arg = nil)
     if block_given? && arg.nil?
@@ -140,7 +149,7 @@ module Enumerable
         counter += 1 if arg == x
       end
     else
-      return length
+      return to_a.length
     end
     counter
   end
@@ -174,10 +183,10 @@ module Enumerable
       else !memo.nil?
            acumulator = memo
            start = 0
-            while start < size
+           while start < size
              acumulator = yield(acumulator, to_a[start])
              start += 1
-            end
+           end
            acumulator
       end
     elsif block_given? == false
@@ -197,33 +206,43 @@ module Enumerable
 end
 
 def multiply_els(arr)
-    arr.my_inject { |x, y| x * y }
+  arr.my_inject { |x, y| x * y }
 end
 
 array = ['a', 'b', 'c', 0, 1, 2, 3, true, false]
 string_array = %w[ab abc abcd]
-num_array = [1,2,3,4,5,6,7,8]
+num_array = [1, 2, 3, 4, 5, 6, 7, 8]
 ary = [1, 2, 4, 2]
 my_proc = proc { |x| x + 2 }
+range = (1..8)
+hash = { 'Jane Doe' => 10, 'Jim Doe' => 6 }
+arr = %w[a b c]
 
 puts ' my_each'
-num_array.my_each { |n| puts "Current number is: #{n}" }
+puts range.my_each { |x| x }
+puts hash.my_each { |x| x }
+print array.my_each { |x| x }
 
 puts ' '
 puts ' my_each_with_index'
 
-array.my_each_with_index do |x, y|
-   puts "#{x}: #{y}"
- end
+arr.my_each_with_index { |x, y| puts "#{x}: #{y}" }
+hash.my_each_with_index { |x, y| puts "#{x}: #{y}" }
+range.my_each_with_index { |x, y| puts "#{x}: #{y}" }
 
 puts ' '
 puts ' my_select'
 puts ' '
 
-print num_array.my_select { |x| x.odd? }
+print num_array.my_select(&:odd?)
 puts ' '
-puts string_array.my_select { |x| x != 'ab' }
+print range.my_select(&:odd?)
 puts ' '
+print string_array.my_select { |x| x != 'ab' }
+puts ' '
+print hash.my_select { |x,y| y != 6 }
+puts ' '
+
 puts ' my_all'
 puts ' '
 puts %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
@@ -232,6 +251,8 @@ puts %w[ant bear cat].my_all?(/t/)                        #=> false
 puts [1, 2i, 3.14].my_all?(Numeric)                       #=> true
 puts [nil, true, 99].my_all?                              #=> false
 puts [].my_all?                                           #=> true
+puts range.my_all?(Float)                                 #=> false
+puts range.my_all?(Numeric)                               #=> true
 
 puts ' '
 puts ' my_any'
@@ -242,51 +263,60 @@ puts %w[ant bear cat].my_any?(/d/)                        #=> false
 puts [nil, true, 99].my_any?(Integer)                     #=> true
 puts [nil, true, 99].my_any?                              #=> true
 puts [].my_any?                                           #=> false
+puts range.my_any?(Float)                                 #=> false
+puts range.my_any?(Numeric)                               #=> true
 
 puts ' '
 puts ' my_none'
 puts ' '
-puts %w{ant bear cat}.my_none? { |word| word.length == 5 } #=> true
-puts %w{ant bear cat}.my_none? { |word| word.length >= 4 } #=> false
-puts %w{ant bear cat}.my_none?(/d/)                        #=> true
+puts %w[ant bear cat].my_none? { |word| word.length == 5 } #=> true
+puts %w[ant bear cat].my_none? { |word| word.length >= 4 } #=> false
+puts %w[ant bear cat].my_none?(/d/)                        #=> true
 puts [1, 3.14, 42].my_none?(Float)                         #=> false
 puts [].my_none?                                           #=> true
 puts [nil].my_none?                                        #=> true
 puts [nil, false].my_none?                                 #=> true
 puts [nil, false, true].my_none?                           #=> false
+puts range.my_none?(Float)                                 #=> true
+puts range.my_none?(Numeric)                               #=> false
 
 puts ' '
 puts 'my_count'
 puts ' '
 puts ary.my_count               #=> 4
 puts ary.my_count(2)            #=> 2
-puts ary.my_count{ |x| x%2==0 } #=> 3
+puts ary.my_count(&:even?)      #=> 3
+puts range.my_count(&:even?)    #=> 3
+puts range.my_count             #=> 8
+
 
 puts ' '
 puts 'my_map'
 puts ' '
-print num_array.my_map { |x| x + 1}
+print num_array.my_map { |x| x + 1 }
 puts ' '
 print num_array.my_map(&my_proc)
+puts ' '
+print range.my_map(&my_proc)
 
 puts ' '
 puts 'my_inject'
 puts ' '
 # Sum some numbers
-puts [5,6,7,8,9,10].my_inject(:+)                             #=> 45
+puts [5, 6, 7, 8, 9, 10].my_inject(:+) #=> 45
 # Same using a block and inject
-puts [5,6,7,8,9,10].my_inject { |sum, n| sum + n }            #=> 45
+puts [5, 6, 7, 8, 9, 10].my_inject { |sum, n| sum + n } #=> 45
 # Multiply some numbers
-puts [5,6,7,8,9,10].my_inject(1, :*)                          #=> 151200
+puts range.my_inject(1, :*) #=> 151200
 # Same using a block
-puts [5,6,7,8,9,10].my_inject(1) { |product, n| product * n } #=> 151200
+puts range.my_inject(1) { |product, n| product * n } #=> 151200
 # find the longest word
-longest = %w{ cat sheep bear }.my_inject do |memo, word|
-   memo.length > word.length ? memo : word
+longest = %w[cat sheep bear].my_inject do |memo, word|
+  memo.length > word.length ? memo : word
 end
-puts longest                                        #=> "sheep"
+puts longest #=> "sheep"
 
 puts ' '
 puts 'multiply_els'
 puts ' '
-puts multiply_els([2,4,5])
+puts multiply_els([2, 4, 5])
