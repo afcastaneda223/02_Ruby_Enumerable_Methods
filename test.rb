@@ -3,12 +3,13 @@
 module Enumerable
   def my_each
     return to_enum unless block_given?
+
     x = 0
-    if is_a?(Array)
-      arr = self
-    else
-      arr = to_a
-    end
+    arr = if is_a?(Array)
+            self
+          else
+            to_a
+          end
     while x < arr.length
       yield(arr[x])
       x += 1
@@ -27,7 +28,7 @@ module Enumerable
         counter += 1 if arg == x
       end
     else
-      return self.to_a.length
+      return to_a.length
     end
     counter
   end
@@ -39,8 +40,7 @@ num_array = [1, 2, 3, 4, 5, 6, 7, 8]
 ary = [1, 2, 4, 2]
 my_proc = proc { |x| x + 2 }
 range = (1..8)
-hash = { 'Jane Doe' => 10, 'Jim Doe' => 6}
-
+hash = { 'Jane Doe' => 10, 'Jim Doe' => 6 }
 
 # puts ' '
 # puts 'my each '
@@ -75,7 +75,6 @@ hash = { 'Jane Doe' => 10, 'Jim Doe' => 6}
 # print hash.my_select { |x,y| y != 6 }
 # puts ' '
 
-
 # puts ' my_all'
 # puts ' '
 # puts %w[ant bear cat].my_all? { |word| word.length >= 3 } #=> true
@@ -87,7 +86,6 @@ hash = { 'Jane Doe' => 10, 'Jim Doe' => 6}
 # puts range.my_all?(Float)                                 #=> false
 # puts range.my_all?(Numeric)                               #=> true
 
-
 # puts ' '
 # puts 'my_count'
 # puts ' '
@@ -95,7 +93,7 @@ hash = { 'Jane Doe' => 10, 'Jim Doe' => 6}
 # puts ary.my_count(2)            #=> 2
 # puts ary.my_count(&:even?) #=> 3
 # puts range.my_count(&:even?) #=> 3
-puts range.my_count             #=> 8
+puts range.my_count #=> 8
 puts (1..8).my_count
 
 # puts ' '
@@ -106,4 +104,3 @@ puts (1..8).my_count
 # puts ary.count(&:even?)      #=> 3
 # puts num_array.count         #=> 8
 # puts range.count             #=> 8
-

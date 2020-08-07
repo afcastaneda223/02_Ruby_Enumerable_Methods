@@ -4,12 +4,13 @@ module Enumerable
   # my_each
   def my_each
     return to_enum unless block_given?
+
     x = 0
-    if is_a?(Array)
-      arr = self
-    else
-      arr = to_a
-    end
+    arr = if is_a?(Array)
+            self
+          else
+            to_a
+          end
     while x < arr.length
       yield(arr[x])
       x += 1
@@ -20,22 +21,24 @@ module Enumerable
   # my_each_with_index
   def my_each_with_index
     return to_enum unless block_given?
+
     x = 0
-    if is_a?(Array)
-      arr = self
-    else
-      arr = to_a
-    end
+    arr = if is_a?(Array)
+            self
+          else
+            to_a
+          end
     while x < arr.length
       yield(arr[x], x)
       x += 1
-   end
+    end
     self
   end
 
   # my_select
   def my_select
     return to_enum unless block_given?
+
     pick = []
     my_each do |x|
       pick.push(x) if yield(x)
@@ -240,7 +243,7 @@ print range.my_select(&:odd?)
 puts ' '
 print string_array.my_select { |x| x != 'ab' }
 puts ' '
-print hash.my_select { |x,y| y != 6 }
+print hash.my_select { |_x, y| y != 6 }
 puts ' '
 
 puts ' my_all'
@@ -288,7 +291,6 @@ puts ary.my_count(2)            #=> 2
 puts ary.my_count(&:even?)      #=> 3
 puts range.my_count(&:even?)    #=> 3
 puts range.my_count             #=> 8
-
 
 puts ' '
 puts 'my_map'
