@@ -2,8 +2,8 @@
 # rubocop:disable Metrics/PerceivedComplexity
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/ModuleLength
 # frozen_string_literal: true
-
 
 module Enumerable
   # my_each
@@ -57,30 +57,24 @@ module Enumerable
       my_each do |x|
         return false if yield(x) == false
       end
-      true
-
     elsif block_given? == false && arg.nil?
       my_each do |x|
         return false if x.nil? || x == false
       end
-      true
     elsif arg.is_a?(Regexp)
       my_each do |x|
         return false unless x.match(arg)
       end
-      true
-
     elsif arg.is_a?(Module)
       my_each do |x|
         return false unless x.is_a?(arg)
       end
-      true
     else !arg.nil?
          my_each do |x|
            return false unless x == arg
          end
-         true
     end
+    true
   end
 
   # my_any?
@@ -89,29 +83,25 @@ module Enumerable
       my_each do |x|
         return true if yield(x) == true
       end
-      false
     elsif arg.nil?
       my_each do |x|
         return true if x
       end
-      false
     elsif arg.is_a?(Regexp)
       my_each do |x|
         return true if x.match(arg)
       end
-      false
     elsif arg.is_a?(Module)
       my_each do |x|
         return true if x.is_a?(arg)
       end
-      false
 
     else !arg.nil?
          my_each do |x|
            return true if x == arg
          end
-         false
     end
+    false
   end
 
   # my_none?
@@ -120,29 +110,25 @@ module Enumerable
       my_each do |x|
         return false if yield(x) == true
       end
-      true
     elsif arg.nil?
       my_each do |x|
         return false if x
       end
-      true
     elsif arg.is_a?(Regexp)
       my_each do |x|
         return false if x.match(arg)
       end
-      true
     elsif arg.is_a?(Module)
       my_each do |x|
         return false if x.is_a?(arg)
       end
-      true
 
     else !arg.nil?
          my_each do |x|
            return false if x == arg
          end
-         true
     end
+    true
   end
 
   # my_count
@@ -221,8 +207,8 @@ arr = [1, 2, 3]
 
 arr.my_each_with_index { |x, y| puts "index: #{x} for #{y}" }
 
-
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
 # rubocop:enable Metrics/AbcSize
 # rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/ModuleLength
