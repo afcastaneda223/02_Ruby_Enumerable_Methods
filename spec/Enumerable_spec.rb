@@ -92,26 +92,42 @@ describe Enumerable do
     #       expect(array4.my_any?{ |word| word.length >= 4 }).to be true  
     #   end
     # end
-    describe '#my_none?' do
-      let(:array1) { [] }
-      let(:array2) { [nil, true, 99] }
-      let(:array3) { [1, 3.14, 42]   }
-      let(:array4) { %w[ant bear cat] }
+    # describe '#my_none?' do
+    #   let(:array1) { [] }
+    #   let(:array2) { [nil, true, 99] }
+    #   let(:array3) { [1, 3.14, 42]   }
+    #   let(:array4) { %w[ant bear cat] }
 
-      it 'When no block is given and empty array' do
-          expect(array1.my_none?).to be true  
+    #   it 'When no block is given and empty array' do
+    #       expect(array1.my_none?).to be true  
+    #   end
+    #   it 'When no block is given and not empty but contains nil' do
+    #       expect(array2.my_none?).to be false    
+    #   end
+    #   it 'When no block is given and imput is Numeric' do
+    #       expect(array3.my_none?(Float)).to be false  
+    #   end
+    #   it 'When no block is given and imput is Regex' do
+    #       expect(array4.my_none?(/d/)).to be true  
+    #   end
+    #   it 'When block is given' do
+    #       expect(array4.my_none?{ |word| word.length == 5 }).to be true  
+    #   end
+    # end
+
+    describe '#my_count' do
+      let(:array) { [1, 2, 4, 2] }
+      
+      it 'when no block is given' do 
+        expect(array.my_count).to eq(4)
       end
-      it 'When no block is given and not empty but contains nil' do
-          expect(array2.my_none?).to be false    
+
+      it 'when no block but with argument' do
+        expect(array.my_count(2)).to eq(2)
       end
-      it 'When no block is given and imput is Numeric' do
-          expect(array3.my_none?(Float)).to be false  
-      end
-      it 'When no block is given and imput is Regex' do
-          expect(array4.my_none?(/d/)).to be true  
-      end
-      it 'When block is given' do
-          expect(array4.my_none?{ |word| word.length == 5 }).to be true  
+
+      it 'when block is given but without argument' do
+        expect(array.my_count { |x| x%2 == 0 }).to eq(3)
       end
     end
 end
