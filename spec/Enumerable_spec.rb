@@ -70,28 +70,49 @@ describe Enumerable do
     #   end
     # end
 
-    describe '#my_any?' do
+    # describe '#my_any?' do
+    #   let(:array1) { [] }
+    #   let(:array2) { [nil, true, 99] }
+    #   let(:array3) { [1, 2i, 3.14]   }
+    #   let(:array4) { %w[ant bear cat] }
+
+    #   it 'When no block is given and empty array' do
+    #       expect(array1.my_any?).to be false  
+    #   end
+    #   it 'When no block is given and not empty but contains nil' do
+    #       expect(array2.my_any?).to be true    
+    #   end
+    #   it 'When no block is given and imput is Numeric' do
+    #       expect(array3.my_any?(Numeric)).to be true  
+    #   end
+    #   it 'When no block is given and imput is Regex' do
+    #       expect(array4.my_any?(/d/)).to be false  
+    #   end
+    #   it 'When block is given' do
+    #       expect(array4.my_any?{ |word| word.length >= 4 }).to be true  
+    #   end
+    # end
+    describe '#my_none?' do
       let(:array1) { [] }
       let(:array2) { [nil, true, 99] }
-      let(:array3) { [1, 2i, 3.14]   }
+      let(:array3) { [1, 3.14, 42]   }
       let(:array4) { %w[ant bear cat] }
 
       it 'When no block is given and empty array' do
-          expect(array1.my_any?).to be false  
+          expect(array1.my_none?).to be true  
       end
       it 'When no block is given and not empty but contains nil' do
-          expect(array2.my_any?).to be true    
+          expect(array2.my_none?).to be false    
       end
       it 'When no block is given and imput is Numeric' do
-          expect(array3.my_any?(Numeric)).to be true  
+          expect(array3.my_none?(Float)).to be false  
       end
       it 'When no block is given and imput is Regex' do
-          expect(array4.my_any?(/d/)).to be false  
+          expect(array4.my_none?(/d/)).to be true  
       end
       it 'When block is given' do
-          expect(array4.my_any?{ |word| word.length >= 4 }).to be true  
+          expect(array4.my_none?{ |word| word.length == 5 }).to be true  
       end
     end
-
 end
 
