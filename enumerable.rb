@@ -69,10 +69,10 @@ module Enumerable
       my_each do |x|
         return false unless x.is_a?(arg)
       end
-    else !arg.nil?
-         my_each do |x|
-           return false unless x == arg
-         end
+    elsif !arg.nil?
+      my_each do |x|
+        return false unless x == arg
+      end
     end
     true
   end
@@ -95,11 +95,10 @@ module Enumerable
       my_each do |x|
         return true if x.is_a?(arg)
       end
-
-    else !arg.nil?
-         my_each do |x|
-           return true if x == arg
-         end
+    elsif !arg.nil?
+      my_each do |x|
+        return true if x == arg
+      end
     end
     false
   end
@@ -122,11 +121,10 @@ module Enumerable
       my_each do |x|
         return false if x.is_a?(arg)
       end
-
-    else !arg.nil?
-         my_each do |x|
-           return false if x == arg
-         end
+    elsif !arg.nil?
+      my_each do |x|
+        return false if x == arg
+      end
     end
     true
   end
@@ -174,14 +172,14 @@ module Enumerable
           start += 1
         end
         acumulator
-      else !memo.nil?
-           acumulator = memo
-           start = 0
-           while start < size
-             acumulator = yield(acumulator, to_a[start])
-             start += 1
-           end
-           acumulator
+      elsif !memo.nil?
+        acumulator = memo
+        start = 0
+        while start < size
+          acumulator = yield(acumulator, to_a[start])
+          start += 1
+        end
+        acumulator
       end
     elsif block_given? == false
       if !memo.nil? && value.nil?
@@ -190,10 +188,10 @@ module Enumerable
         acumulator
       elsif memo.nil? && value.nil?
         yield(self)
-      else !value.nil?
-           acumulator = memo
-           my_each { |x| acumulator = acumulator.send(value, x) }
-           acumulator
+      elsif !value.nil?
+        acumulator = memo
+        my_each { |x| acumulator = acumulator.send(value, x) }
+        acumulator
       end
     end
   end
@@ -202,10 +200,6 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
-
-arr = [1, 2, 3]
-
-arr.my_each_with_index { |x, y| puts "index: #{x} for #{y}" }
 
 # rubocop:enable Metrics/CyclomaticComplexity
 # rubocop:enable Metrics/PerceivedComplexity
