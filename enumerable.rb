@@ -1,4 +1,9 @@
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
 # frozen_string_literal: true
+
 
 module Enumerable
   # my_each
@@ -215,3 +220,9 @@ end
 arr = [1, 2, 3]
 
 arr.my_each_with_index { |x, y| puts "index: #{x} for #{y}" }
+
+
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/MethodLength

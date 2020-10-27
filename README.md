@@ -11,6 +11,8 @@ The Program includes Enumerable methods that work the same as the original, they
 #my_map
 #my_inject
 
+Rspec testing was added to complement the project.
+
 
 ## Built With
 
@@ -29,14 +31,15 @@ The Program includes Enumerable methods that work the same as the original, they
 - Twitter: [@afcastaneda](https://twitter.com/afcastaneda)
 - Linkedin: [Andres Felipe Castañeda](www.linkedin.com/in/andres-castaneda223)
 
+👤 **Roy Mukuye**
+
+- GitHub: [@mke2111](https://github.com/mke2111)
+- Twitter:[@Roymkenya](https://twitter.com/Roymkenya)
+- LinkedIn: [Roy Mukuye](https://www.linkedin.com/in/roy-mukuye-42b07b1b4)
 
 ## Show your support
 
 Give a ⭐️ if you like this project!
-
-## Acknowledgments
-
-- My family
 
 
 ## 📝 License
