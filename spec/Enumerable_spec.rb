@@ -115,20 +115,30 @@ describe Enumerable do
     #   end
     # end
 
-    describe '#my_count' do
+    # describe '#my_count' do
+    #   let(:array) { [1, 2, 4, 2] }
+      
+    #   it 'when no block is given' do 
+    #     expect(array.my_count).to eq(4)
+    #   end
+
+    #   it 'when no block but with argument' do
+    #     expect(array.my_count(2)).to eq(2)
+    #   end
+
+    #   it 'when block is given but without argument' do
+    #     expect(array.my_count { |x| x%2 == 0 }).to eq(3)
+    #   end
+    # end
+
+    describe '#my_map' do
       let(:array) { [1, 2, 4, 2] }
       
-      it 'when no block is given' do 
-        expect(array.my_count).to eq(4)
-      end
-
-      it 'when no block but with argument' do
-        expect(array.my_count(2)).to eq(2)
-      end
-
-      it 'when block is given but without argument' do
-        expect(array.my_count { |x| x%2 == 0 }).to eq(3)
-      end
+    it 'When no block is given' do
+      expect(array.my_map).to be_a(Enumerable)
+    end
+    it 'When block is given' do
+    expect(array.my_map{|x| x*x}).to eq([1,4,16,4])
     end
 end
-
+end
