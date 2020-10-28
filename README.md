@@ -23,7 +23,7 @@ Rspec testing was added to complement the project.
 -  https://github.com/afcastaneda223/02_Ruby_Enumerable_Methods
 
 
-## Author
+## Authors
 
 👤 **Andres Felipe Castañeda Ramos**
 
