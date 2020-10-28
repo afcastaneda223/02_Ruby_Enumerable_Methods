@@ -1,3 +1,8 @@
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/ModuleLength
 # frozen_string_literal: true
 
 module Enumerable
@@ -52,30 +57,24 @@ module Enumerable
       my_each do |x|
         return false if yield(x) == false
       end
-      true
-
     elsif block_given? == false && arg.nil?
       my_each do |x|
         return false if x.nil? || x == false
       end
-      true
     elsif arg.is_a?(Regexp)
       my_each do |x|
         return false unless x.match(arg)
       end
-      true
-
     elsif arg.is_a?(Module)
       my_each do |x|
         return false unless x.is_a?(arg)
       end
-      true
-    else !arg.nil?
-         my_each do |x|
-           return false unless x == arg
-         end
-         true
+    elsif !arg.nil?
+      my_each do |x|
+        return false unless x == arg
+      end
     end
+    true
   end
 
   # my_any?
@@ -84,29 +83,24 @@ module Enumerable
       my_each do |x|
         return true if yield(x) == true
       end
-      false
     elsif arg.nil?
       my_each do |x|
         return true if x
       end
-      false
     elsif arg.is_a?(Regexp)
       my_each do |x|
         return true if x.match(arg)
       end
-      false
     elsif arg.is_a?(Module)
       my_each do |x|
         return true if x.is_a?(arg)
       end
-      false
-
-    else !arg.nil?
-         my_each do |x|
-           return true if x == arg
-         end
-         false
+    elsif !arg.nil?
+      my_each do |x|
+        return true if x == arg
+      end
     end
+    false
   end
 
   # my_none?
@@ -115,29 +109,24 @@ module Enumerable
       my_each do |x|
         return false if yield(x) == true
       end
-      true
     elsif arg.nil?
       my_each do |x|
         return false if x
       end
-      true
     elsif arg.is_a?(Regexp)
       my_each do |x|
         return false if x.match(arg)
       end
-      true
     elsif arg.is_a?(Module)
       my_each do |x|
         return false if x.is_a?(arg)
       end
-      true
-
-    else !arg.nil?
-         my_each do |x|
-           return false if x == arg
-         end
-         true
+    elsif !arg.nil?
+      my_each do |x|
+        return false if x == arg
+      end
     end
+    true
   end
 
   # my_count
@@ -183,14 +172,14 @@ module Enumerable
           start += 1
         end
         acumulator
-      else !memo.nil?
-           acumulator = memo
-           start = 0
-           while start < size
-             acumulator = yield(acumulator, to_a[start])
-             start += 1
-           end
-           acumulator
+      elsif !memo.nil?
+        acumulator = memo
+        start = 0
+        while start < size
+          acumulator = yield(acumulator, to_a[start])
+          start += 1
+        end
+        acumulator
       end
     elsif block_given? == false
       if !memo.nil? && value.nil?
@@ -199,10 +188,10 @@ module Enumerable
         acumulator
       elsif memo.nil? && value.nil?
         yield(self)
-      else !value.nil?
-           acumulator = memo
-           my_each { |x| acumulator = acumulator.send(value, x) }
-           acumulator
+      elsif !value.nil?
+        acumulator = memo
+        my_each { |x| acumulator = acumulator.send(value, x) }
+        acumulator
       end
     end
   end
@@ -211,3 +200,9 @@ end
 def multiply_els(arr)
   arr.my_inject { |x, y| x * y }
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/ModuleLength
